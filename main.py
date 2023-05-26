@@ -1,44 +1,14 @@
 from flask import Flask, jsonify, render_template
 import os
 import random
-import json
 import logging
-
+from quotes_dataset import quotes, fall_back_quote
 # Configure the logging module
 logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-
-quotes = []
-
-fall_back_quote = {
-    "Quote": "Don't cry because it's over, smile because it happened.",
-    "Author": "Dr. Seuss",
-    "Tags": [
-        "attributed-no-source",
-        "cry",
-        "crying",
-        "experience",
-        "happiness",
-        "joy",
-        "life",
-        "misattributed-dr-seuss",
-        "optimism",
-        "sadness",
-        "smile",
-        "smiling "
-    ],
-    "Popularity": 0.15566615566615566,
-    "Category": "life"
-}
-
-
-def load_quotes():
-    with open('public/quotes.json', 'r', encoding='utf-8') as file:
-        quotes.extend(json.load(file))
-
 
 def get_quote():
     try:
@@ -68,6 +38,4 @@ def index():
 
 
 if __name__ == '__main__':
-    logger.info("Can access dataset: " + str(os.path.exists('quotes.json')))
-    load_quotes()
     app.run(debug=True, port=os.getenv("PORT", default=5000))
