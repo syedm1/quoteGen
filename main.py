@@ -36,7 +36,7 @@ fall_back_quote = {
 
 
 def load_quotes():
-    with open('quotes.json', 'r', encoding='utf-8') as file:
+    with open('public/quotes.json', 'r', encoding='utf-8') as file:
         quotes.extend(json.load(file))
 
 
