@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Matrix Quote App API</title>
-    <style>
-        body {
-            background-color: #000000;
-            font-family: 'Courier New', monospace;
-            text-align: center;
-            margin-top: 100px;
-        }
+  <title>Matrix Quote Generator</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00FF00;
+      font-family: monospace;
+      text-align: center;
+    }
 
-        h1 {
-            color: #00ff00;
-            font-size: 40px;
-        }
+  
 
-        p {
-            color: #00ff00;
-            font-size: 24px;
-        }
+    .container {
+      width: 500px;
+      margin: 100px auto;
+      padding: 20px;
+      border: 2px solid #00FF00;
+      border-radius: 10px;
+    }
 
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px;
-        }
+    h1 {
+      font-size: 24px;
+    }
 
-        .quote-button {
+    .quote {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .quote-button {
             background-color: #00ff00;
             border: none;
             color: #000000;
@@ -46,15 +47,67 @@
             background-color: #ff0000;
             color: #000000;
         }
-    </style>
-</head>
+    .refresh {
+      margin-top: 20px;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+    }
 
+    .refresh:before,
+    .refresh:after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 10px;
+      background-color: #00FF00;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .refresh:before {
+      transform-origin: bottom center;
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    .refresh:after {
+      transform-origin: top center;
+      transform: translateX(-50%) rotate(-45deg);
+    }
+  </style>
+  <script>
+    function getQuote() {
+      fetch('/api/quote')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('quote').textContent = data.quote;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function refreshQuote() {
+      getQuote();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      getQuote();
+    });
+  </script>
+</head>
 <body>
+  <div class="container">
     <h1>Welcome to the Matrix Quote App API!</h1>
     <p>Escape the simulation and get your dose of quotes from the Matrix.</p>
     <div class="container">
         <a href="/api/quote" class="quote-button">Take the Red Pill</a>
     </div>
+    <div class="quote" id="quote"></div>
+    <div class="refresh" onclick="refreshQuote()"></div>
+  </div>
 </body>
-
 </html>
