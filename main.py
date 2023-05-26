@@ -9,7 +9,6 @@ logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-
 app = Flask(__name__)
 
 quotes = []
@@ -69,5 +68,6 @@ def index():
 
 
 if __name__ == '__main__':
+    logger.info("Can access dataset: " + str(os.path.exists('quotes.json')))
     load_quotes()
     app.run(debug=True, port=os.getenv("PORT", default=5000))
