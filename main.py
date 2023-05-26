@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import os
 import random
 import json
@@ -22,6 +22,11 @@ def diagnostic():
 def get_quote():
     quote = random.choice(quotes)
     return jsonify({'quote': quote})
+
+
+@app.route('/')
+def index():
+    return render_template('aboutAPI.html')
 
 
 if __name__ == '__main__':
