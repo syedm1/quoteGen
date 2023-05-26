@@ -131,46 +131,20 @@
       }
     }
 
-    .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAEsCAIAAAAQqD5kAAAAJElEQVR42u3RwQkAIAwEwL8gK1Bbr53UqEqA0kSRIkSJEmSJEmSRIkSJEmSRIkSf4F+/uBd7DWWL7NAAAAAElFTkSuQmCC');
-      background-size: cover;
-      background-position: center;
-    }
-      /* CSS styles for the document folder */
-      .document-folder {
-      background-color: #f1f1f1;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 20px;
-      margin: 20px;
-      display: inline-block; /* Added to make the folder appear inline */
-    }
+.document-folder-content {
+  font-size: 18px;
+  margin-top: 10px;
+}
 
-    .document-folder-header {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+/* Additional styles for the "Docs" link */
+.document-folder-link {
+  color: #00FF00;
+  text-decoration: none;
+}
 
-    .document-folder-content {
-      font-size: 18px;
-      margin-top: 10px;
-    }
-
-    /* Additional styles for the "Docs" link */
-    .document-folder-link {
-      color: #00FF00;
-      text-decoration: none;
-    }
-
-    .document-folder-link:hover {
-      color: #1b1b1b;
-    }
+.document-folder-link:hover {
+  color: #e2e2e2;
+}
   </style>
   <script>
     function getQuote() {
@@ -206,19 +180,14 @@
     <p>Escape the simulation and get your dose of quotes from the Matrix.</p>
     <div class="container">
         <a href="/api/quote" class="quote-button">Take the Red Pill</a>
+        <div class="document-folder-content">
+            <a href="/docs" class="document-folder-link">Swagger Documentation</a>
+          </div>
     </div>
     <div class="refresh" onclick="refreshQuote()"></div>
     <div class="quote" id="quote"></div>
     <div class="author" id="author"></div>
   </div>
-  <div class="footer">
-    <!-- Updated "Docs" link with document folder style -->
-    <div class="document-folder">
-      <div class="document-folder-header"></div>
-      <div class="document-folder-content">
-        <a href="/docs" class="document-folder-link">Swagger Documentation</a>
-      </div>
-    </div>
-  </div>
+
 </body>
 </html>
