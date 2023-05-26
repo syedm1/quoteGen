@@ -12,7 +12,19 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-api = Api(app, version='1.0', title='Quote API', description='API for managing quotes')
+
+def main_page():
+    return render_template('aboutAPI.html')
+
+
+def diagnostic():
+    return jsonify({'status': 'ok'})
+
+# Define the route for the root path using app.add_url_rule()
+app.add_url_rule('/', 'main_page', main_page)
+app.add_url_rule('/diagnostic', 'diagnostic', diagnostic)
+
+api = Api(app= app,doc='/docs', version='1.0', title='Quote API', description='API for managing quotes')
 
 quote_repository = QuoteRepository(quotes)
 
