@@ -147,8 +147,8 @@
       fetch('/api/quote')
         .then(response => response.json())
         .then(data => {
-          const quote = data.quote.Quote;
-          const author = data.quote.Author;
+          const quote = data.Quote;
+          const author = data.Author;
 
           const quoteElement = document.getElementById('quote');
           const authorElement = document.getElementById('author');

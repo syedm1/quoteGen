@@ -1,18 +1,16 @@
 import unittest
-import json
+from unittest.mock import patch
 from flask import Flask
-from main import app, load_quotes
+from flask.testing import FlaskClient
+from main import app
+import json
 
 
-class FlaskAPITestCase(unittest.TestCase):
-
+class TestRoutes(unittest.TestCase):
     def setUp(self):
         # Create a test Flask app
         self.app = app.test_client()
         self.app.testing = True
-
-        # Load quotes before running the tests
-        load_quotes()
 
     def test_index_route(self):
         response = self.app.get('/')
@@ -30,10 +28,17 @@ class FlaskAPITestCase(unittest.TestCase):
         data = json.loads(response.data.decode('utf-8'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('quote', data)
+    
+    def test_get_random_quote_route(self):
+        response = self.app.get('/api/random')
+        data = json.loads(response.data.decode('utf-8'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('quote', data)
 
     def test_invalid_route(self):
         response = self.app.get('/invalid')
         self.assertEqual(response.status_code, 404)
+ 
 
 
 if __name__ == '__main__':
