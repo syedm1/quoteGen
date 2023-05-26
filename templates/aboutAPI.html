@@ -141,14 +141,44 @@
       background-size: cover;
       background-position: center;
     }
+      /* CSS styles for the document folder */
+      .document-folder {
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin: 20px;
+      display: inline-block; /* Added to make the folder appear inline */
+    }
+
+    .document-folder-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .document-folder-content {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    /* Additional styles for the "Docs" link */
+    .document-folder-link {
+      color: #00FF00;
+      text-decoration: none;
+    }
+
+    .document-folder-link:hover {
+      color: #1b1b1b;
+    }
   </style>
   <script>
     function getQuote() {
       fetch('/api/quote')
         .then(response => response.json())
         .then(data => {
-          const quote = data.Quote;
-          const author = data.Author;
+          const quote = data.quote.Quote;
+          const author = data.quote.Author;
 
           const quoteElement = document.getElementById('quote');
           const authorElement = document.getElementById('author');
@@ -181,6 +211,14 @@
     <div class="quote" id="quote"></div>
     <div class="author" id="author"></div>
   </div>
-  <div class="footer"></div>
+  <div class="footer">
+    <!-- Updated "Docs" link with document folder style -->
+    <div class="document-folder">
+      <div class="document-folder-header"></div>
+      <div class="document-folder-content">
+        <a href="/api/docs" class="document-folder-link">Swagger UI Documentation</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
