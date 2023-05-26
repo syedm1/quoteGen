@@ -1,6 +1,4 @@
 from flask import Flask, jsonify, render_template, request
-from flask_restx import Api, Resource
-from flask_swagger_ui import get_swaggerui_blueprint
 import os
 import logging
 from QuoteRepository import QuoteRepository
@@ -12,96 +10,80 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-api = Api(app, version='1.0', title='Quote API', description='API for managing quotes')
 
 quote_repository = QuoteRepository(quotes)
 
-# Swagger UI configuration
-SWAGGER_URL = '/api/docs'  # URL for accessing the Swagger UI
-API_URL = '/api/swagger.json'  # URL for accessing the API definition JSON file
-swagger_ui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "Quote API Documentation"
-    }
-)
-app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
 
-# Define the namespace for the API
-ns = api.namespace('api', description='Quote operations')
+@app.route('/diagnostic', methods=['GET'])
+def diagnostic():
+    return jsonify({'status': 'ok'})
 
-@ns.route('/random')
-class RandomQuoteResource(Resource):
-    @api.doc(responses={200: 'OK', 500: 'Internal Server Error'})
-    def get(self):
-        try:
-            return {'quote': quote_repository.get_random_quote()}
-        except Exception as e:
-            logging.exception(e)
-            return {'quote': 'No quote found'}, 500
 
-@ns.route('/quote')
-class QuoteResource(Resource):
-    @api.doc(responses={200: 'OK', 500: 'Internal Server Error'})
-    def get(self):
-        try:
-            return {'quote': quote_repository.get_random_quote()}
-        except Exception as e:
-            logging.exception(e)
-            return {'quote': 'No quote found'}, 500
+@app.route('/api/random', methods=['GET'])
+def get_random_quote():
+    try:
+        return jsonify({'quote': quote_repository.get_random_quote()})
+    except Exception as e:
+        logging.exception(e)
+        return jsonify({'quote': 'No quote found'}), 500
 
-@ns.route('/quote/category')
-class CategoryQuoteResource(Resource):
-    @api.doc(params={'category': 'Category name'}, responses={200: 'OK', 500: 'Internal Server Error'})
-    def get(self):
-        category = request.args.get('category')
-        limit = int(request.args.get('limit', 1))
-        try:
-            quotes = quote_repository.search_by_category(category, limit=limit)
-            return {'quotes': quotes}
-        except Exception as e:
-            logging.exception(e)
-            return {'quote': 'No quotes found for the specified category'}, 500
 
-@ns.route('/quote/author')
-class AuthorQuoteResource(Resource):
-    @api.doc(params={'author': 'Author name'}, responses={200: 'OK', 500: 'Internal Server Error'})
-    def get(self):
-        author = request.args.get('author')
-        limit = int(request.args.get('limit', 1))
-        try:
-            quotes = quote_repository.search_by_author(author, limit=limit)
-            return {'quotes': quotes}
-        except Exception as e:
-            logging.exception(e)
-            return {'quote': 'No quotes found for the specified author'}, 500
+@app.route('/api/quote', methods=['GET'])
+def get_quote():
+    try:
+        return jsonify({'quote': quote_repository.get_random_quote()})
+    except Exception as e:
+        logging.exception(e)
+        return jsonify({'quote': 'No quote found'}), 500
 
-@ns.route('/quote/tag')
-class TagQuoteResource(Resource):
-    @api.doc(params={'tag': 'Tag name'}, responses={200: 'OK', 500: 'Internal Server Error'})
-    def get(self):
-        tag = request.args.get('tag')
-        limit = int(request.args.get('limit', 1))
-        try:
-            quotes = quote_repository.search_by_tag(tag, limit=limit)
-            return {'quotes': quotes}
-        except Exception as e:
-            logging.exception(e)
-            return {'quote': 'No quotes found for the specified tag'}, 500
 
-@ns.route('/quote/tags')
-class TagsQuoteResource(Resource):
-    @api.doc(params={'tags': 'Tags (comma-separated)'}, responses={200: 'OK', 500: 'Internal Server Error'})
-    def get(self):
-        tags = request.args.getlist('tags')
-        limit = int(request.args.get('limit', 1))
-        try:
-            quotes = quote_repository.search_by_tags(tags, limit=limit)
-            return {'quotes': quotes}
-        except Exception as e:
-            logging.exception(e)
-            return {'quote': 'No quotes found for the specified tags'}, 500
+@app.route('/api/quote/category', methods=['GET'])
+def search_by_category():
+    category = request.args.get('category')
+    limit = int(request.args.get('limit', 1))
+    try:
+        quotes = quote_repository.search_by_category(category, limit=limit)
+        return jsonify({'quotes': quotes})
+    except Exception as e:
+        logging.exception(e)
+        return jsonify({'quote': 'No quotes found for the specified category'}), 500
+
+
+@app.route('/api/quote/author', methods=['GET'])
+def search_by_author():
+    author = request.args.get('author')
+    limit = int(request.args.get('limit', 1))
+    try:
+        quotes = quote_repository.search_by_author(author, limit=limit)
+        return jsonify({'quotes': quotes})
+    except Exception as e:
+        logging.exception(e)
+        return jsonify({'quote': 'No quotes found for the specified author'}), 500
+
+
+@app.route('/api/quote/tag', methods=['GET'])
+def search_by_tag():
+    tag = request.args.get('tag')
+    limit = int(request.args.get('limit', 1))
+    try:
+        quotes = quote_repository.search_by_tag(tag, limit=limit)
+        return jsonify({'quotes': quotes})
+    except Exception as e:
+        logging.exception(e)
+        return jsonify({'quote': 'No quotes found for the specified tag'}), 500
+
+
+@app.route('/api/quote/tags', methods=['GET'])
+def search_by_tags():
+    tags = request.args.getlist('tags')
+    limit = int(request.args.get('limit', 1))
+    try:
+        quotes = quote_repository.search_by_tags(tags, limit=limit)
+        return jsonify({'quotes': quotes})
+    except Exception as e:
+        logging.exception(e)
+        return jsonify({'quote': 'No quotes found for the specified tags'}), 500
+
 
 @app.route('/')
 def index():
