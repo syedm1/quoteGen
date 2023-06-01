@@ -10,7 +10,7 @@
 
 ## Live on
 
-- quote.up.railway.app
+- [quote.up.railway.app](https://quote.up.railway.app/)
 
 ## How to use this api?
 
