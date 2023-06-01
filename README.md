@@ -15,4 +15,4 @@
 ## How to use this api?
 
 - just take the red pill on site
-- or use GET on this endpoint https://quote.up.railway.app/api/quote like an idiot
+- or use GET on this endpoint https://quote.up.railway.app/api/quote 
